@@ -121,15 +121,30 @@
 <script src="https://code.jquery.com/jquery.js"></script>
 
 <!-- Code to the Javascript File -->
-<script src="NYTCode.js">
+<script>
 
 var searchTerm = $("#searchTerm");
 var numRecordsSelect = $("#searchTerm");
 var numRecordsSelectValue = numRecordsSelect.val();
 var startYear = $("#startYear")
-var startYearValue = startyear.value;
+var startYearValue = startYear.value;
 var endYear = $("#endYear");
 var endYearValue = endYear.value;
+
+// event listener
+
+
+//clear all
+$("#clearAll").on("click",function(event)
+{
+	event.preventDefault();
+	searchTerm.val("");
+	startYear.val("");
+	endYear.val("");
+
+	/// to do 
+		// clear the appended list of documents
+})
 </script>
 
 </body>
