@@ -124,7 +124,8 @@
 <script>
 
 var searchTerm = $("#searchTerm");
-var numRecordsSelect = $("#searchTerm");
+var searchTermValue = $("#searchTerm").val();
+var numRecordsSelect = $("#searchTerm");	
 var numRecordsSelectValue = numRecordsSelect.val();
 var startYear = $("#startYear")
 var startYearValue = startYear.value;
@@ -145,6 +146,42 @@ $("#clearAll").on("click",function(event)
 	/// to do 
 		// clear the appended list of documents
 })
+
+
+$("#runSearch").on("click", function(event) 
+    {
+		event.preventDefault();
+		// get current value of input fields
+		searchTermValue = $("#searchTerm").val().trim();
+		numRecordsSelectValue = numRecordsSelect.val();
+		startYearValue = startYear.value;
+		endYearValue = endYear.value;
+
+		if (searchTermValue.length === 0)
+			{
+				alert("Please enter a search term");
+			}
+		else
+		{
+			// URL for the API that will be utilized in the application
+			var key = '2HnMUm3q4q4peJOxCeqhAALmJZP4zKmC'
+			var URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?";
+ 
+			var queries = "q="+searchTermValue; //+ "&=" + startYearValue + "&end_date=" + endYearValue;
+			var apiKey = " &api-key=" + key;
+			var queryURL = URL + queries + apiKey; 
+			console.log(searchTermValue);
+
+			$.ajax({
+				url: queryURL,
+				method: "GET"
+				}).then(function(response) 
+					{
+						console.log(response);
+		
+					});
+		}
+    });
 </script>
 
 </body>

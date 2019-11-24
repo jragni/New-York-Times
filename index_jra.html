@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>New York Times App</title>
+</head>
+
+<body>
+  <button id="button">generate</button>
+  <div id="images">
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+  <script type="text/javascript">
+    // event listener for the cat-button element 
+    $("#button").on("click", function() {
+
+      // URL for the API that will be utilized in the application
+      var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=KxZJTjYyfFxkYG1j3yOE97EdUDlcYiFL";
+
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
+        console.log(response);
+        
+        });
+    });
+
+    ("#button").on("click", function() 
+    {
+
+        // URL for the API that will be utilized in the application
+        var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=KxZJTjYyfFxkYG1j3yOE97EdUDlcYiFL";
+
+            $.ajax({
+            url: queryURL,
+            method: "GET"
+            }).then(function(response) 
+                {
+                    console.log(response);
+    
+                });
+    });
+
+  </script>
+</body>
+
+</html>
