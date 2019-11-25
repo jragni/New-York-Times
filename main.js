@@ -1,66 +1,64 @@
-// Psuedocoding
+//Pseudocode:
+// 1. Create JS to retrieve user inputs and convert to variables
+// 2. Use variables to run an AJAX call to the NYT to get JSON object to work with
+// 3. Break down the NYT object into usable fields
+// 4. Dynamically generate the content in HTML that will provide the information 
+// 5. Address with potential bugs (ex. missing field)
+
+// Set up variable
 // ==================
-// 1 - retrieves user inputs and convert to variables
-// 2 - use those variables to run an ajax call to the New York Times
-// 3 - breakdown the NYT object into usrable fields
-// 4 - dynamically generate the html content
-// 5 - deal with 'edge cases' -- bugs or situations that are not intuitive.
 
-
-
+// API key for NYT
 var authKey = "hH9OqC4qMD3lsmA9mjDLaGg7WwItGwzf";
 
-var searchTerm = "";
-var numRecords = 0;
+// Variables that dedine search parameters
+var queryTerm = "";
+var numResults = 0;
 var startYear = 0;
 var endYear = 0;
 
-// url of api authorization
-var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?&api-key=" + authKey;
+// URL of api authorization and authorization key
+var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?" + "api-key=" + authKey;
 
-// variable to track number of articles
+// Variable to track number the of articles
 var articleCounter = 0;
+
+
+// Set up functions
+// ==================================================================
 
 function runQuery(numArticles, queryURL) {
 
     $.ajax({ url: queryURL, method: "GET" })
         .done(function(NYTData) {
-
-            for (var i = 0; i < numArticles; i++) {
-                console.log(NYTData.response.docs[i].section_name);
-                console.log(NYTData.response.docs[i].pub_date);
-                console.log(NYTData.response.docs[i].web_url);
-
-               
-
             console.log(queryURL);
-            console.log(numArticles);
             console.log(NYTData);
-
-        });
-
+        })
 }
 
-// main processes
-// ==================
+// Methods (Function Calls)
+// ==================================================================
+$("#runSearch").on("click", function(event) {
+    // Prevents moving to a different page 
+    return false;
 
+    searchTerm = $("#term").val().trim();
+    console.log(queryTerm);
 
-// on click this pulls the query from the api 
+    // Add the search term
+     var newURL = queryURL + "&q=" + searchTerm;
+    console.log(newURL);
 
-$('#searchBtn').on('click', function() {
+    // Get the number of Results
+    var searchTerm = $("#term").val().trim();
+    console.log(queryTerm);
 
-    searchTerm = $('#search').val().trim();
-    // console.log(searchTerm);
+    // Get the start year and end year
+    startYear = $("#startYear").val().trim() + "0101";
+    endYear = $("endYear").val().trim() + "0101";
 
-    var newURL = queryURL + "&q=" + searchTerm;
-    // console.log(newURL);
-
-    // get the number of results		
-    numRecords = $('#numRecords').val();
-
-
-    // get the start and end year
-    startYear = $('#startYear').val().trim();
-    endYear = $('#endYear').val().trim();
-
-})
+    newURL = newURL + "&begin-date=" + startYear + "&end-date" + endYear;
+    console.log(newURL)
+    
+    // Send the AJAX call the new URL
+    runQuery(10, newURL)
