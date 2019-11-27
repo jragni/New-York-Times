@@ -5,7 +5,7 @@
 // 4. Dynamically generate the content in HTML that will provide the information 
 // 5. Deal with potential bugs (ex. missing field)
 
-// Set up variable
+// Set up variables
 // ==================
 
 // API key for NYT
@@ -32,6 +32,9 @@ function runQuery(numArticles, queryURL){
     $.ajax({url: queryURL, method: "GET"})
        // NYTdata stores everything 
         .done(function(NYTData) {
+
+            // Clear wells from previous search
+            $("#wellSection").empty();
             // Display info for selected number of articles
             for (var i=0; i<numArticles; i++) {
                 console.log(NYTData.response.docs[i].headline.main);
@@ -48,21 +51,32 @@ function runQuery(numArticles, queryURL){
                 // Grab our well section and add jQuery
                 $("#wellSection").append(wellSection);
                 
+                // Check if information exists - then it will be include ()
+                // Online if it has its own property will info present
+                if(NYTData.response.docs[i].headline != "Info Not Available") {
+                    console.log(NYTData.response.docs[i].headline.main);
+                    $("#articleWell" + i).append("<h3>" + NYTData.response.docs[i].headline.main + "</h3>");
+                }
+                
+                if(NYTData.response.docs[i].byline && NYTData.response.docs[i].byline.hasOwnProperty("original")) {
+                    console.log(NYTData.response.docs[i].byline.original);
+                    $("#articleWell" + i).append("<h5>" + NYTData.response.docs[i].byline + "</h5>");
+                }
+
                 // Connect content to correct well
                 // As we loop, each well will have a name (article 0, article 1, etc) and then refer to article wells created and append the HTML content
-                $("#articleWell" + i).append("<h3>" + NYTData.response.docs[i].headline.main + "</h3>");
                 $("#articleWell" + i).append("<h5>" + NYTData.response.docs[i].section_name + "</h5>");
                 $("#articleWell" + i).append("<h5>" + NYTData.response.docs[i].pub_date + "</h5>");
                 $("#articleWell" + i).append("<h5>" + NYTData.response.docs[i].byline.original + "</h5>");
-                $("#articleWell" + i).append("<a href=" + NYTData.response.docs[i].web_url">" + NYTData.response.docs[i].web_url + "</a>");
-
-
+                $("#articleWell" + i).append("<a href=" + NYTData.response.docs[i].web_url + ">" + NYTData.response.docs[i].web_url + "</a>");
+           
+                console.log(NYTData.response.docs[i].section_name);
+                console.log(NYTData.response.docs[i].pub_date);
+                console.log(NYTData.response.docs[i].web_url);
             }
-
-            console.log(queryURL);
-            console.log(numArticles);
-            console.log(NYTData);          
+                      
         })
+        
 }
 
 // Methods (Function Calls)
@@ -99,6 +113,7 @@ $("#searchBtn").on("click", function() {
     // Send the AJAX call the new URL
     runQuery(numResults, newURL);
 
+    // Stay on page
     return false;
 
 })
